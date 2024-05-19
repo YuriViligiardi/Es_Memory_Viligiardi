@@ -3,8 +3,8 @@ package it.viligiardi.pojo;
 public class Player {
     // attributes
     private String name;
-    private static int score = 0;
-    private static int numWF = 0; // number of words found
+    private static Integer score = 0;
+    private static Integer numWF = 0; // number of words found
     // methods and constructions
 
     public Player(String name) {
@@ -19,22 +19,28 @@ public class Player {
         this.name = name;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         Player.score = score;
     }
 
-    public int getNumWF() {
+    public Integer getNumWF() {
         return numWF;
     }
 
-    public void setNumWF(int numWF) {
+    public void setNumWF(Integer numWF) {
         Player.numWF = numWF;
     }
 
+    /**
+     * funzione di controllo/settare il nome dei giocatori
+     * 
+     * @param s   nome del giocatore inserito dall'utente
+     * @param num numero del giocatore (1 or 2)
+     */
     public void setNickName(String s, int num) {
         if (s == null || s.equals("")) {
             this.name = "GIOCATORE" + num;

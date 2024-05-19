@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.viligiardi.pojo.Game;
+import it.viligiardi.pojo.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -28,6 +29,10 @@ public class GameController implements Initializable {
     @FXML
     private Label scoreP2;
     @FXML
+    private Label numCardsFoundP1;
+    @FXML
+    private Label numCardsFoundP2;
+    @FXML
     private Label comment;
 
     @FXML
@@ -37,7 +42,10 @@ public class GameController implements Initializable {
 
     // @FXML
     public void selectButton(Button b) {
+        Integer x = gp.getColumnIndex(b);
+        Integer y = gp.getRowIndex(b);
 
+        Game.showWord(x, y);
     }
 
     // @FXML
@@ -68,17 +76,28 @@ public class GameController implements Initializable {
     }
 
     // @FXML
-    private void view() {
+    public void view() {
         nameP1.setText(Game.p1.getName());
         nameP2.setText(Game.p2.getName());
-        // String s = Game.p1.getScore().toString();
-        // scoreP1.setText(s);
-        // String s1 = Game.p2.getScore().toString();
-        // scoreP2.setText(s1);
+        String s = Game.p1.getScore().toString();
+        scoreP1.setText(s);
+        String s1 = Game.p2.getScore().toString();
+        scoreP2.setText(s1);
+        String s2 = Game.p1.getNumWF().toString();
+        numCardsFoundP1.setText(s2);
+        String s3 = Game.p2.getNumWF().toString();
+        numCardsFoundP1.setText(s3);
+    }
+
+    // @FXML
+    public void reset() {
+
     }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         createGridPane();
+        view();
+        Game.populateField();
     }
 }
