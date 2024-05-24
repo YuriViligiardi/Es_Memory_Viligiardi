@@ -5,11 +5,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.viligiardi.pojo.Game;
-import it.viligiardi.pojo.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -41,9 +42,11 @@ public class GameController implements Initializable {
     }
 
     // @FXML
-    public void selectButton(Button b) {
-        Integer x = gp.getColumnIndex(b);
-        Integer y = gp.getRowIndex(b);
+    public void selectButton(Parent p) {
+        Integer x = gp.getColumnIndex(p);
+        Integer y = gp.getRowIndex(p);
+
+        ((VBox) p).getChildren().get(0).setVisible(true);
 
         Game.showWord(x, y);
     }
@@ -60,17 +63,24 @@ public class GameController implements Initializable {
 
                 Label l = new Label();
                 vb.setMargin(l, new Insets(0.0, 0.0, 20.0, 0.0));
+                l.setVisible(false);
+                String s = Game.f.getMatrix()[x][y];
+                l.setText(s);
 
                 Button b = new Button();
+                b.setText("SCOPRI");
 
                 b.setOnAction(event -> {
+                    Node n = (Node) event.getSource();
+                    Parent p = n.getParent();
+
                     // quello che succede al clic
-                    selectButton(b);
+                    selectButton(p);
                 });
 
                 vb.getChildren().add(l);
                 vb.getChildren().add(b);
-                gp.add(b, x, y);
+                gp.add(vb, x, y);
             }
         }
     }
@@ -86,7 +96,7 @@ public class GameController implements Initializable {
         String s2 = Game.p1.getNumWF().toString();
         numCardsFoundP1.setText(s2);
         String s3 = Game.p2.getNumWF().toString();
-        numCardsFoundP1.setText(s3);
+        numCardsFoundP2.setText(s3);
     }
 
     // @FXML
@@ -96,8 +106,10 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        comment.setText("Scopri due carte");
+        Game.populateField();
+        Game.printMatrix();
         createGridPane();
         view();
-        Game.populateField();
     }
 }

@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" style="-fx-background-radius: 20; -fx-pref-width: 500; -fx-pref-height: 350;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.viligiardi.controller.ControllerMenu">
+<VBox alignment="CENTER" spacing="20.0" style="-fx-background-radius: 20; -fx-pref-width: 500; -fx-pref-height: 350;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.viligiardi.controller.MenuController">
    <children>
-      <Label text="BENVENUTO SU TRIS!" textFill="#d30101">
+      <Label text="BENVENUTO SU MEMORY!" textFill="#d30101">
          <font>
             <Font size="36.0" />
          </font></Label>

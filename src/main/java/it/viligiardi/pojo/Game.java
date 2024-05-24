@@ -1,5 +1,7 @@
 package it.viligiardi.pojo;
 
+import java.util.ArrayList;
+
 import it.viligiardi.service.FileManager;
 
 public class Game {
@@ -10,17 +12,24 @@ public class Game {
     // methods and constructions
 
     public static void populateField() {
-        for (int i = 0; i < f.getDim(); i++) {
-            for (int j = 0; j < f.getDim(); j++) {
-                String s = FileManager.readFile();
-                if (!s.equals(null)) {
-                    f.getMatrix()[i][j] = s;
-                } else {
-                    System.out.println("FINITO DI POPOLARE IL CAMPO");
-                    break;
+        ArrayList<String> lw = FileManager.readFile();
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                int x, y;
+
+                do {
+                    x = (int) (Math.random() * 4); // da 0 a 3
+                    y = (int) (Math.random() * 4);
+                } while (f.getMatrix()[x][y] != null);
+
+                if (lw.get(j) != null) {
+                    f.getMatrix()[x][y] = lw.get(j);
                 }
             }
         }
+        System.out.println("FINITO DI POPOLARE IL CAMPO");
     }
 
     public static String showWord(Integer x, Integer y) {
@@ -71,5 +80,15 @@ public class Game {
 
     public static void resetField() {
         populateField();
+    }
+
+    // per il controllo
+    public static void printMatrix() {
+        for (int i = 0; i < f.getDim(); i++) {
+            System.out.println(" ");
+            for (int j = 0; j < f.getDim(); j++) {
+                System.out.print(f.getMatrix()[i][j] + "| ");
+            }
+        }
     }
 }
