@@ -3,12 +3,14 @@ package it.viligiardi.pojo;
 public class Player {
     // attributes
     private String name;
+    private String symbol;
     private static Integer score = 0;
     private static Integer numWF = 0; // number of words found
     // methods and constructions
 
-    public Player(String name) {
+    public Player(String name, String symbol) {
         this.name = name;
+        this.symbol = symbol;
     }
 
     public String getName() {
@@ -33,6 +35,14 @@ public class Player {
 
     public void setNumWF(Integer numWF) {
         Player.numWF = numWF;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     /**

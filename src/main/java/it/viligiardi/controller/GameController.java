@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import it.viligiardi.pojo.Game;
+import it.viligiardi.pojo.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -35,6 +36,14 @@ public class GameController implements Initializable {
     private Label numCardsFoundP2;
     @FXML
     private Label comment;
+    // @FXML
+    int cd; // num card discovered
+    // @FXML
+    String[] wd = {}; // word discovered
+    // @FXML
+    int turn; // turn Player
+    // @FXML
+    int num = 0;
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -42,13 +51,61 @@ public class GameController implements Initializable {
     }
 
     // @FXML
-    public void selectButton(Parent p) {
-        Integer x = gp.getColumnIndex(p);
-        Integer y = gp.getRowIndex(p);
-
+    public void wordDiscovered(Integer x, Integer y, Parent p) {
+        wd[cd] = Game.showWord(x, y);
         ((VBox) p).getChildren().get(0).setVisible(true);
+        cd++;
+    }
 
-        Game.showWord(x, y);
+    public void action(Parent p, Player pl) {
+        if (cd == 1) {
+            wordDiscovered(gp.getColumnIndex(p), gp.getRowIndex(p), p);
+
+            if (Game.isFoundWord(wd[0], wd[1], pl)) {
+                if (Game.isVictory()) {
+                    gp.setDisable(true);
+                    Object o = Game.whoWon(Game.p1, Game.p2);
+
+                    if (o.equals(null)) {
+                        comment.setText("PAREGGIO");
+                    } else if (o.equals(Game.p1)) {
+                        comment.setText("HA VINTO" + Game.p1.getName());
+                    } else {
+                        comment.setText("HA VINTO" + Game.p2.getName());
+                    }
+                } else {
+                    comment.setText(pl.getName() + "HA INDOVINATO UNA COPPIA");
+
+                }
+            } else {
+                comment.setText(pl.getName() + "NON HA INDOVINATO UNA COPPIA");
+                ((VBox) p).getChildren().get(0).setVisible(false);
+            }
+
+        } else {
+            wordDiscovered(gp.getColumnIndex(p), gp.getRowIndex(p), p);
+        }
+    }
+
+    // @FXML
+    public void selectButton(Parent p) {
+        if (turn % 2 == 0) {
+            action(p, Game.p1);
+            if (num != 0) {
+                wd[0] = null;
+                wd[1] = null;
+                turn++;
+                num = 0;
+            }
+        } else {
+            action(p, Game.p2);
+            if (num != 0) {
+                wd[0] = null;
+                wd[1] = null;
+                turn++;
+                num = 0;
+            }
+        }
     }
 
     // @FXML
@@ -106,6 +163,8 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        cd = 0;
+        turn = 0;
         comment.setText("Scopri due carte");
         Game.populateField();
         Game.printMatrix();

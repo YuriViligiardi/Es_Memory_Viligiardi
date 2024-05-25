@@ -7,12 +7,12 @@ import it.viligiardi.service.FileManager;
 public class Game {
     // attributes
     public static Field f = new Field();
-    public static Player p1 = new Player("");
-    public static Player p2 = new Player("");
+    public static Player p1 = new Player("", "P1");
+    public static Player p2 = new Player("", "P2");
+    public static ArrayList<String> lw = FileManager.readFile();
     // methods and constructions
 
     public static void populateField() {
-        ArrayList<String> lw = FileManager.readFile();
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 8; j++) {
@@ -37,21 +37,21 @@ public class Game {
         return s;
     }
 
-    public static boolean isFoundWord(String s, String s1) {
+    public static boolean isFoundWord(String s, String s1, Player p) {
         if (s.equals(s1)) {
-            Game.disableWord(s);
-            Game.disableWord(s1);
+            Game.disableWord(s, p);
+            Game.disableWord(s1, p);
             return true;
         } else {
             return false;
         }
     }
 
-    public static void disableWord(String s) {
+    public static void disableWord(String s, Player p) {
         for (int i = 0; i < f.getDim(); i++) {
             for (int j = 0; j < f.getDim(); j++) {
                 if (f.getMatrix()[i][j].equals(s)) {
-                    f.getMatrix()[i][j] = "X";
+                    f.getMatrix()[i][j] = p.getSymbol();
                 }
             }
         }
@@ -60,12 +60,36 @@ public class Game {
     public static boolean isVictory() {
         for (int i = 0; i < f.getDim(); i++) {
             for (int j = 0; j < f.getDim(); j++) {
-                if (!f.getMatrix()[i][j].equals("X")) {
-                    return false;
+                for (String s : lw) {
+                    if (f.getMatrix()[i][j] == s) {
+                        return true;
+                    }
                 }
             }
         }
-        return true;
+        return false;
+    }
+
+    public static Object controllWon(int n) {
+        if (n == 8) {
+            return null;
+        } else if (n > 8) {
+            return p1;
+        } else {
+            return p2;
+        }
+    }
+
+    public static Object whoWon(Player p1, Player p2) {
+        int num = 0;
+        for (int i = 0; i < f.getDim(); i++) {
+            for (int j = 0; j < f.getDim(); j++) {
+                if (f.getMatrix()[i][j].equals(p1.getSymbol())) {
+                    num++;
+                }
+            }
+        }
+        return controllWon(num);
     }
 
     public static Object won() {
